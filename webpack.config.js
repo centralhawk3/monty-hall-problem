@@ -6,6 +6,10 @@ module.exports = {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),
 	},
+	 devServer: {
+      contentBase: './dist',
+      hot: true,
+    },
 	module: {
 		rules: [
 			{
@@ -15,6 +19,14 @@ module.exports = {
 					'css-loader',
 				],
 			},
+			{
+				test: /\.(js|jsx)$/,
+				exclude: /node_modules/,
+				use: ['babel-loader'],
+			},
 		],
 	},
+	resolve: {
+		extensions: ['.js', '.jsx'],
+	}
 };
