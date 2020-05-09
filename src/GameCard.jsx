@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames'; 
 
-import { Card, CardContent } from '@material-ui/core';
+import { Card } from '@material-ui/core';
 
 class GameCard extends React.Component {
 
@@ -24,18 +26,25 @@ class GameCard extends React.Component {
 				cardIsFlipped: true,
 			});
 		}
+
+		this.props.onClick(this.props.card);
 	}
 
 	render() {
 		return (
 			<div className="playingCardScene" onClick={() => this.flip()}>
 				<div className={this.state.cardClasses}>
-					<Card className="playingCardFace playingCardFace--front" />
-					<Card className="playingCardFace playingCardFace--back" />
+					<Card className="playingCardFace card2B" />
+					<Card className="1j" className={`playingCardFace playingCardFace--front card${this.props.card}`} />
 				</div>
 			</div>
 		);
 	}
 }
+
+GameCard.propTypes = {
+	card: PropTypes.string,
+	onClick: PropTypes.func,
+};
 
 export default GameCard;

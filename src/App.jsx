@@ -1,11 +1,9 @@
 import React from 'react';
 
-import GameCard from './GameCard';
+import Board from './Board';
 
 const App = () => (
-	<div className="gameSpace">
-		<GameCard /><GameCard /><GameCard />
-	</div>
+	<Board />
 );
 
 export default App;

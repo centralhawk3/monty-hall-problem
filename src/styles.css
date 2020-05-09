@@ -1,10 +1,15 @@
 html, body, #root, .gameSpace {
 	height: 100%;
+	font-family: 'Roboto';
 } 
 
 body {
 	background: grey;
 	color: white;
+}
+
+.gameTitle {
+	text-align: center;
 }
 
 .gameSpace {
@@ -35,18 +40,23 @@ body {
 	position: absolute;
 	height: 100%;
 	width: 100%;
+	background-size: 239px 335px;
+	border-radius: 12px !important;
 	backface-visibility: hidden;
 }
 
-.playingCardFace--back {
-	background: url(./2B.svg) !important;
-	background-size: 239px 335px;
-	border-radius: 12px;
+.playingCardFace--front {
+	transform: rotateY(180deg);
 }
 
-.playingCardFace--front {
-	background: url(./2J.svg) !important;
-	background-size: 239px 335px;
-	border-radius: 12px;
-	transform: rotateY(180deg);
+.cardAH {
+	background: url(./AH.svg) !important;
+}
+
+.card2B {
+	background: url(./2B.svg) !important;
+}
+
+.card1J {
+	background: url(./1J.svg) !important;
 }
