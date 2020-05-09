@@ -24,9 +24,13 @@ module.exports = {
 				exclude: /node_modules/,
 				use: ['babel-loader'],
 			},
+			{
+				test: /\.(svg)$/,
+				use: ['file-loader'],
+			},
 		],
 	},
 	resolve: {
-		extensions: ['.js', '.jsx'],
+		extensions: ['.js', '.jsx', '.svg'],
 	}
 };

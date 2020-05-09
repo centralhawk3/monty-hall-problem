@@ -1,3 +1,52 @@
+html, body, #root, .gameSpace {
+	height: 100%;
+} 
+
 body {
-	background: white;
+	background: grey;
+	color: white;
+}
+
+.gameSpace {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.playingCardScene {
+	width: 239px;
+	height: 335px;
+	perspective: 600px;
+	align-self: center;
+}
+
+.playingCard {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	transition: transform 1s;
+	transform-style: preserve-3d;
+}
+
+.playingCard.isFlipped {
+	transform: rotateY(180deg);
+}
+
+.playingCardFace {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	backface-visibility: hidden;
+}
+
+.playingCardFace--back {
+	background: url(./2B.svg) !important;
+	background-size: 239px 335px;
+	border-radius: 12px;
+}
+
+.playingCardFace--front {
+	background: url(./2J.svg) !important;
+	background-size: 239px 335px;
+	border-radius: 12px;
+	transform: rotateY(180deg);
 }
