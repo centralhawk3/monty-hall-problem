@@ -1,8 +1,9 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@material-ui/core';
+import { shuffleArray } from 'utilities/arrays';
 
-import GameCard from './GameCard';
+import GameCard from 'components/GameCard/GameCard';
 
 class Board extends React.Component {
 
@@ -18,15 +19,7 @@ class Board extends React.Component {
 	}
 
 	getCards() {
-		const cardOptions = ['1J', '1J', 'AH'];
-		const cards = [];
-		while (cardOptions.length > 0) {
-			const randomNumber = Math.floor(Math.random() * cardOptions.length);
-			cards.push(cardOptions[randomNumber]);
-			cardOptions.splice(randomNumber, 1);
-		}
-
-		return cards;
+		return shuffleArray(['1J', '1J', 'AH']);
 	}
 
 	handleOnClick(card) {

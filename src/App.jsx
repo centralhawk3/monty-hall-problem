@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Board from './Board';
+import Game from 'components/Game/Game';
 
 const App = () => (
-	<Board />
+	<Game />
 );
 
 export default App;

@@ -58,13 +58,13 @@ body {
 }
 
 .cardAH {
-	background: url(./AH.svg) !important;
+	background: url(./components/GameCard/assets/AH.svg) !important;
 }
 
 .card2B {
-	background: url(./2B.svg) !important;
+	background: url(./components/GameCard/assets/2B.svg) !important;
 }
 
 .card1J {
-	background: url(./1J.svg) !important;
+	background: url(./components/GameCard/assets/1J.svg) !important;
 }

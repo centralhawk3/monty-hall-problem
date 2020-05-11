@@ -15,17 +15,10 @@ class GameCard extends React.Component {
 	}
 
 	flip() {
-		if (this.state.cardIsFlipped) {
-			this.setState({
-				cardClasses: 'playingCard',
-				cardIsFlipped: false,
-			});
-		} else {
-			this.setState({
-				cardClasses: 'playingCard isFlipped',
-				cardIsFlipped: true,
-			});
-		}
+		this.setState({
+			cardClasses: this.state.cardIsFlipped ? 'playingCard' : 'playingCard isFlipped',
+			cardIsFlipped: !this.state.cardIsFlipped,
+		});
 
 		this.props.onClick(this.props.card);
 	}
