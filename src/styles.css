@@ -8,6 +8,10 @@ body {
 	color: white;
 }
 
+.hide {
+	display: none;
+}
+
 .gameTitle {
 	display: flex;
     justify-content: center;
@@ -19,10 +23,13 @@ body {
 	justify-content: space-evenly;
 }
 
-.playAgainButton {
+.playingButtonsGroup {
 	display: flex;
-    justify-content: center;
-    margin: 2rem 0 0 0;
+	justify-content: center;
+}
+
+.playAgainButton {
+    margin: 3rem 3rem 0 0;
 }
 
 .playingCardScene {
@@ -67,4 +74,16 @@ body {
 
 .card1J {
 	background: url(./components/GameCard/assets/1J.svg) !important;
+}
+
+
+.markCardWrapper {
+	position: absolute;
+    top: 14%;
+}
+
+.markCard {
+	height: 100% !important;
+    width: 100% !important;
+    color: green;
 }
