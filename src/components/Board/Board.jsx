@@ -15,6 +15,16 @@ class Board extends React.Component {
 			cards: this.getCards(),
 			cardHasBeenChosen: false,
 			message: 'Find The Ace',
+			metrics: {
+				winsWithoutSwitching: 0,
+				lossesWithoutSwitching: 0,
+				winsWithSwitching: 0,
+				lossesWithSwitching: 0,
+			},
+			switchWasOffered: false,
+			switchedCardChoice: false,
+			gamesPlayedTotal: 0,
+			cardsHaveBeenRevealed: false,
 		};
 		this.handleOnClick = this.handleOnClick.bind(this);
 		this.reset = this.reset.bind(this);
@@ -65,6 +75,7 @@ class Board extends React.Component {
 
 				this.setState({
 					cards: this.state.cards,
+					switchWasOffered: shouldFlipACard,
 					message: shouldFlipACard
 						? 'The host has decided to flip a card for you...'
 						: 'The host has decided NOT to flip a card for you...',
@@ -88,6 +99,10 @@ class Board extends React.Component {
 			winnerFound: false,
 			cardHasBeenChosen: false,
 			message: 'Find The Ace',
+			gamesPlayedTotal: this.state.gamesPlayedTotal+1,
+			cardsHaveBeenRevealed: false,
+			switchWasOffered: false,
+			switchedCardChoice: false,
 		});
 	}
 
@@ -104,13 +119,12 @@ class Board extends React.Component {
 		}
 		this.setState({
 			cards: this.state.cards,
+			switchedCardChoice: true,
 		});
 	}
 
 	reveal() {
 		const isChoiceAWinner = this.state.cards.findIndex((c) => c.face === 'AH' && c.chosen === true) > -1;
-
-		console.log(isChoiceAWinner, this.state.cards);
 
 		const flippedCards = this.state.cards.map((card) => {
 			return {
@@ -120,13 +134,45 @@ class Board extends React.Component {
 			}
 		});
 
+		let metrics = this.state.metrics;
+		if (this.state.switchedCardChoice && isChoiceAWinner) {
+			metrics = {
+				...metrics,
+				winsWithSwitching: metrics.winsWithSwitching+1,	
+			}
+		}
+
+		if (this.state.switchedCardChoice === false && isChoiceAWinner) {
+			metrics = {
+				...metrics,
+				winsWithoutSwitching: metrics.winsWithoutSwitching+1,	
+			}
+		}
+
+		if (this.state.switchedCardChoice && !isChoiceAWinner) {
+			metrics = {
+				...metrics,
+				lossesWithSwitching: metrics.lossesWithSwitching+1,	
+			}
+		}
+
+		if (this.state.switchedCardChoice === false && !isChoiceAWinner) {
+			metrics = {
+				...metrics,
+				lossesWithoutSwitching: metrics.lossesWithoutSwitching+1,	
+			}
+		}
+
 		this.setState({
+			metrics: metrics,
 			cards: flippedCards,
 			message: isChoiceAWinner ? 'You Win!' : 'You Lose!',
+			cardsHaveBeenRevealed: true,
 		});
 	}
 
 	render() {
+		const { switchWasOffered, cardHasBeenChosen, cardsHaveBeenRevealed } = this.state;
 		return (
 			<div>
 				<h1 className="gameTitle">{this.state.message}</h1>
@@ -136,15 +182,21 @@ class Board extends React.Component {
 			     	})}
 			    </div>
 			    <div className="playingButtonsGroup">
-				    <div className="playAgainButton">
-				    	<Button variant="contained" color="primary" onClick={() => this.reset()}>Play Again</Button>
-				    </div>
-				    <div className="playAgainButton">
-				    	<Button variant="contained" color="secondary" onClick={() => this.switchCardChoice()}>Switch Choice</Button>
-				    </div>
-				    <div className="playAgainButton">
-				    	<Button variant="contained" color="primary" onClick={() => this.reveal()}>Reveal</Button>
-				    </div>
+				    {cardsHaveBeenRevealed && 
+				    	<div className="playAgainButton">
+					    	<Button variant="contained" color="primary" onClick={() => this.reset()}>Play Again</Button>
+					    </div>
+					}
+				    {(switchWasOffered && cardsHaveBeenRevealed === false) && 
+				    	<div className="playAgainButton">
+				    		<Button variant="contained" color="secondary" onClick={() => this.switchCardChoice()}>Switch Choice</Button>
+				    	</div>
+				    }
+				    {(cardHasBeenChosen && cardsHaveBeenRevealed === false) &&
+					    <div className="playAgainButton">
+					    	<Button variant="contained" color="primary" onClick={() => this.reveal()}>Reveal</Button>
+					    </div>
+					}
 			    </div>
 			</div>
 		);
