@@ -2,6 +2,7 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@material-ui/core';
 import { shuffleArray } from 'utilities/arrays';
+import { FormGroup, FormControlLabel, Switch, TextField } from '@material-ui/core';
 
 import GameCard from 'components/GameCard/GameCard';
 
@@ -20,11 +21,11 @@ class Board extends React.Component {
 				lossesWithoutSwitching: 0,
 				winsWithSwitching: 0,
 				lossesWithSwitching: 0,
+				gamesPlayedTotal: 0,
 			},
-			switchWasOffered: false,
 			switchedCardChoice: false,
-			gamesPlayedTotal: 0,
 			cardsHaveBeenRevealed: false,
+			offerSwitch: false,
 		};
 		this.handleOnClick = this.handleOnClick.bind(this);
 		this.reset = this.reset.bind(this);
@@ -61,11 +62,9 @@ class Board extends React.Component {
 			this.setState({
 				cards: this.state.cards,
 				cardHasBeenChosen: true,
-				message: 'The host is deciding their next move...',
 			}, () => {
-				const shouldFlipACard = shuffleArray([0,1])[0] === 1;
-
-				if (shouldFlipACard) {
+				const offerSwitch = shuffleArray([0,1])[0] === 1;
+				if (offerSwitch) {
 					const cardToUpdate = this.state.cards.findIndex((c) => c.face === '1J' && c.chosen === false && c.flipped == false);
 					this.state.cards[cardToUpdate] = {
 						...this.state.cards[cardToUpdate],
@@ -75,18 +74,7 @@ class Board extends React.Component {
 
 				this.setState({
 					cards: this.state.cards,
-					switchWasOffered: shouldFlipACard,
-					message: shouldFlipACard
-						? 'The host has decided to flip a card for you...'
-						: 'The host has decided NOT to flip a card for you...',
-				}, () => {
-					if (shouldFlipACard) {
-						setTimeout(() => {
-							this.setState({
-								message: 'Switch your initial choice?',
-							})
-						}, 2000)
-					}					
+					offerSwitch,
 				});
 			});
 		}
@@ -99,7 +87,6 @@ class Board extends React.Component {
 			winnerFound: false,
 			cardHasBeenChosen: false,
 			message: 'Find The Ace',
-			gamesPlayedTotal: this.state.gamesPlayedTotal+1,
 			cardsHaveBeenRevealed: false,
 			switchWasOffered: false,
 			switchedCardChoice: false,
@@ -163,6 +150,11 @@ class Board extends React.Component {
 			}
 		}
 
+		metrics = {
+			...metrics,
+			gamesPlayedTotal: metrics.gamesPlayedTotal+1,
+		};
+
 		this.setState({
 			metrics: metrics,
 			cards: flippedCards,
@@ -172,13 +164,44 @@ class Board extends React.Component {
 	}
 
 	render() {
-		const { switchWasOffered, cardHasBeenChosen, cardsHaveBeenRevealed } = this.state;
+		const {
+			id,
+			message,
+			offerSwitch,
+			cardHasBeenChosen,
+			cardsHaveBeenRevealed,
+			cards,
+			metrics: {
+				winsWithoutSwitching,
+				lossesWithoutSwitching,
+				winsWithSwitching,
+				lossesWithSwitching,
+				gamesPlayedTotal,
+			},
+		} = this.state;
+
+		const winPercentWithSwitching = parseFloat((winsWithSwitching / gamesPlayedTotal) * 100).toFixed(2);
+		const lossPercentWithSwitching = parseFloat((lossesWithSwitching / gamesPlayedTotal) * 100).toFixed(2);
+		const winPercentWithoutSwitching = parseFloat((winsWithoutSwitching / gamesPlayedTotal) * 100).toFixed(2);
+		const lossPercentWithoutSwitching = parseFloat((lossesWithoutSwitching / gamesPlayedTotal) * 100).toFixed(2);
+
 		return (
 			<div>
-				<h1 className="gameTitle">{this.state.message}</h1>
+	    		<div className="metrics">
+			    	<div className="metricBox">
+			    		Rounds: {gamesPlayedTotal}
+			    	</div>
+			    	<div className="metricBox">
+			    		WWOS: {winPercentWithoutSwitching}%
+			    	</div>
+			    	<div className="metricBox">
+			    		WWS: {winPercentWithSwitching}%
+			    	</div>
+		    	</div>
+				<h1 className="gameTitle">{message}</h1>
 			    <div className="gameSpace">
-			    	{this.state.cards.map((value, index) => {
-			        	return <GameCard key={this.state.id + index + value.face + (value.chosen ? '1' : '0')} card={value} onClick={this.handleOnClick} />
+			    	{cards.map((value, index) => {
+			        	return <GameCard key={id + index + value.face + (value.chosen ? '1' : '0')} card={value} onClick={this.handleOnClick} />
 			     	})}
 			    </div>
 			    <div className="playingButtonsGroup">
@@ -187,7 +210,7 @@ class Board extends React.Component {
 					    	<Button variant="contained" color="primary" onClick={() => this.reset()}>Play Again</Button>
 					    </div>
 					}
-				    {(switchWasOffered && cardsHaveBeenRevealed === false) && 
+				    {(offerSwitch && cardHasBeenChosen && cardsHaveBeenRevealed === false) && 
 				    	<div className="playAgainButton">
 				    		<Button variant="contained" color="secondary" onClick={() => this.switchCardChoice()}>Switch Choice</Button>
 				    	</div>

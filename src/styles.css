@@ -29,7 +29,7 @@ body {
 }
 
 .playAgainButton {
-    margin: 3rem 3rem 0 0;
+    margin: 3rem 0 2rem 0;
 }
 
 .playingCardScene {
@@ -86,4 +86,16 @@ body {
 	height: 100% !important;
     width: 100% !important;
     color: green;
+}
+
+.metrics {
+	display: flex;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+}
+
+.metricBox {
+	font-size: 2rem;
+    border: 0.25rem solid blue;
+    padding: 0.5rem;
 }
