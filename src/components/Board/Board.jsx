@@ -14,7 +14,6 @@ class Board extends React.Component {
 			id: uuidv4(),
 			winnerFound: false,
 			cards: this.getCards(),
-			cardHasBeenChosen: false,
 			message: 'Find The Ace',
 			metrics: {
 				winsWithoutSwitching: 0,
@@ -26,6 +25,7 @@ class Board extends React.Component {
 			switchedCardChoice: false,
 			cardsHaveBeenRevealed: false,
 			offerSwitch: false,
+			cardHasBeenChosen: false,
 		};
 		this.handleOnClick = this.handleOnClick.bind(this);
 		this.reset = this.reset.bind(this);
