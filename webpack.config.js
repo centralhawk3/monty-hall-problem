@@ -6,10 +6,10 @@ module.exports = {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),
 	},
-	 devServer: {
-      contentBase: './dist',
-      hot: true,
-    },
+	devServer: {
+		contentBase: './dist',
+		hot: true,
+	},
 	module: {
 		rules: [
 			{
@@ -36,5 +36,5 @@ module.exports = {
 			'utilities': path.resolve(__dirname, 'src/utilities/'),
 		},
 		extensions: ['.js', '.jsx'],
-	}
+	},
 };
