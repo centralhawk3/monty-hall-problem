@@ -24,7 +24,6 @@ class Board extends React.Component {
 			},
 			switchedCardChoice: false,
 			cardsHaveBeenRevealed: false,
-			offerSwitch: false,
 			cardHasBeenChosen: false,
 		};
 		this.handleOnClick = this.handleOnClick.bind(this);
@@ -63,18 +62,14 @@ class Board extends React.Component {
 				cards: this.state.cards,
 				cardHasBeenChosen: true,
 			}, () => {
-				const offerSwitch = shuffleArray([0,1])[0] === 1;
-				if (offerSwitch) {
-					const cardToUpdate = this.state.cards.findIndex((c) => c.face === '1J' && c.chosen === false && c.flipped == false);
-					this.state.cards[cardToUpdate] = {
-						...this.state.cards[cardToUpdate],
-						flipped: true,
-					}
+				const cardToUpdate = this.state.cards.findIndex((c) => c.face === '1J' && c.chosen === false && c.flipped == false);
+				this.state.cards[cardToUpdate] = {
+					...this.state.cards[cardToUpdate],
+					flipped: true,
 				}
 
 				this.setState({
 					cards: this.state.cards,
-					offerSwitch,
 				});
 			});
 		}
@@ -167,7 +162,6 @@ class Board extends React.Component {
 		const {
 			id,
 			message,
-			offerSwitch,
 			cardHasBeenChosen,
 			cardsHaveBeenRevealed,
 			cards,
@@ -210,7 +204,7 @@ class Board extends React.Component {
 					    	<Button variant="contained" color="primary" onClick={() => this.reset()}>Play Again</Button>
 					    </div>
 					}
-				    {(offerSwitch && cardHasBeenChosen && cardsHaveBeenRevealed === false) && 
+				    {(cardHasBeenChosen && cardsHaveBeenRevealed === false) && 
 				    	<div className="playAgainButton">
 				    		<Button variant="contained" color="secondary" onClick={() => this.switchCardChoice()}>Switch Choice</Button>
 				    	</div>
