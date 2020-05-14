@@ -83,7 +83,6 @@ class Board extends React.Component {
 			cardHasBeenChosen: false,
 			message: 'Find The Ace',
 			cardsHaveBeenRevealed: false,
-			switchWasOffered: false,
 			switchedCardChoice: false,
 		});
 	}
@@ -195,7 +194,8 @@ class Board extends React.Component {
 				<h1 className="gameTitle">{message}</h1>
 			    <div className="gameSpace">
 			    	{cards.map((value, index) => {
-			        	return <GameCard key={id + index + value.face + (value.chosen ? '1' : '0')} card={value} onClick={this.handleOnClick} />
+			    		const key = id + index + value.face + (value.chosen ? '1' : '0');
+			        	return <GameCard key={key} card={value} onClick={this.handleOnClick} />
 			     	})}
 			    </div>
 			    <div className="playingButtonsGroup">
