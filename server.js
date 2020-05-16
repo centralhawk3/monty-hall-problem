@@ -4,12 +4,12 @@ const webpack = require('webpack');
 const config = require('./webpack.config.js');
 
 const port = process.env.PORT || 5000;
-const host = process.env.HOST || '0.0.0.0';
 
 const options = {
   contentBase: './dist',
   hot: true,
-  host,
+  host: '0.0.0.0',
+  disableHostCheck: true
 };
 
 webpackDevServer.addDevServerEntrypoints(config, options);
