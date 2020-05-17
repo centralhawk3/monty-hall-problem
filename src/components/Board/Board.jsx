@@ -106,9 +106,10 @@ class Board extends React.Component {
 	}
 
 	reveal() {
-		const isChoiceAWinner = this.state.cards.findIndex((c) => c.face === 'AH' && c.chosen === true) > -1;
+		const { switchedCardChoice, cards } = this.state;
+		const isChoiceAWinner = cards.findIndex((c) => c.face === 'AH' && c.chosen === true) > -1;
 
-		const flippedCards = this.state.cards.map((card) => {
+		const flippedCards = cards.map((card) => {
 			return {
 				...card,
 				flipped: true,
@@ -117,41 +118,27 @@ class Board extends React.Component {
 		});
 
 		let metrics = this.state.metrics;
-		if (this.state.switchedCardChoice && isChoiceAWinner) {
-			metrics = {
-				...metrics,
-				winsWithSwitching: metrics.winsWithSwitching+1,	
-			}
+		if (switchedCardChoice && isChoiceAWinner) {
+			metrics.winsWithSwitching = metrics.winsWithSwitching + 1
 		}
 
-		if (this.state.switchedCardChoice === false && isChoiceAWinner) {
-			metrics = {
-				...metrics,
-				winsWithoutSwitching: metrics.winsWithoutSwitching+1,	
-			}
+		if (switchedCardChoice === false && isChoiceAWinner) {
+			metrics.winsWithoutSwitching = metrics.winsWithoutSwitching + 1;
 		}
 
-		if (this.state.switchedCardChoice && !isChoiceAWinner) {
-			metrics = {
-				...metrics,
-				lossesWithSwitching: metrics.lossesWithSwitching+1,	
-			}
+		if (switchedCardChoice && !isChoiceAWinner) {
+			metrics.lossesWithSwitching = metrics.lossesWithSwitching + 1;
 		}
 
-		if (this.state.switchedCardChoice === false && !isChoiceAWinner) {
-			metrics = {
-				...metrics,
-				lossesWithoutSwitching: metrics.lossesWithoutSwitching+1,	
-			}
+		if (switchedCardChoice === false && !isChoiceAWinner) {
+			metrics.lossesWithoutSwitching = metrics.lossesWithoutSwitching + 1;
 		}
-
-		metrics = {
-			...metrics,
-			gamesPlayedTotal: metrics.gamesPlayedTotal+1,
-		};
 
 		this.setState({
-			metrics: metrics,
+			metrics: {
+				...metrics,
+				gamesPlayedTotal: metrics.gamesPlayedTotal+1,
+			},
 			cards: flippedCards,
 			message: isChoiceAWinner ? 'You Win!' : 'You Lose!',
 			cardsHaveBeenRevealed: true,

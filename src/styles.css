@@ -96,6 +96,6 @@ body {
 
 .metricBox {
 	font-size: 2rem;
-    border: 0.25rem solid blue;
+    border-bottom: 0.125rem solid #3f51b5;
     padding: 0.5rem;
 }

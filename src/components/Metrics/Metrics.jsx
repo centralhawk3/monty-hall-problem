@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { toPercentageTransform } from 'transforms/common';
 
 class Metrics extends Component {
 
@@ -18,10 +19,10 @@ class Metrics extends Component {
 			},
 		} = this.props;
 
-		const winPercentWithSwitching = parseFloat((winsWithSwitching / gamesPlayedTotal) * 100).toFixed(2);
-		const lossPercentWithSwitching = parseFloat((lossesWithSwitching / gamesPlayedTotal) * 100).toFixed(2);
-		const winPercentWithoutSwitching = parseFloat((winsWithoutSwitching / gamesPlayedTotal) * 100).toFixed(2);
-		const lossPercentWithoutSwitching = parseFloat((lossesWithoutSwitching / gamesPlayedTotal) * 100).toFixed(2);
+		const winPercentWithSwitching = toPercentageTransform(winsWithSwitching / (winsWithSwitching + lossesWithSwitching));
+		const lossPercentWithSwitching = toPercentageTransform(lossesWithSwitching / (winsWithSwitching + lossesWithSwitching));
+		const winPercentWithoutSwitching = toPercentageTransform(winsWithoutSwitching / (winsWithoutSwitching + lossesWithoutSwitching));
+		const lossPercentWithoutSwitching = toPercentageTransform(lossesWithoutSwitching / (winsWithoutSwitching + lossesWithoutSwitching));
 
 		return (
 			<div className="metrics">
