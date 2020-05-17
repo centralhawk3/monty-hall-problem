@@ -1,7 +1,7 @@
-export const toPercentageTransform = (number, dp = 0) => {
-	if (isNaN(number)) {
+export const fractionToPercentageTransform = (numerator, denominator, dp = 0) => {
+	if (isNaN(numerator / denominator)) {
 		return 0;
 	}
 
-	return parseFloat(number * 100).toFixed(dp);
+	return parseFloat(numerator / denominator * 100).toFixed(dp);
 }

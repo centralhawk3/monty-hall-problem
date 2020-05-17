@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { toPercentageTransform } from 'transforms/common';
+import { fractionToPercentageTransform } from 'transforms/common';
 
 class Metrics extends Component {
 
@@ -19,22 +19,26 @@ class Metrics extends Component {
 			},
 		} = this.props;
 
-		const winPercentWithSwitching = toPercentageTransform(winsWithSwitching / (winsWithSwitching + lossesWithSwitching));
-		const lossPercentWithSwitching = toPercentageTransform(lossesWithSwitching / (winsWithSwitching + lossesWithSwitching));
-		const winPercentWithoutSwitching = toPercentageTransform(winsWithoutSwitching / (winsWithoutSwitching + lossesWithoutSwitching));
-		const lossPercentWithoutSwitching = toPercentageTransform(lossesWithoutSwitching / (winsWithoutSwitching + lossesWithoutSwitching));
+		const winPercentWithSwitching = fractionToPercentageTransform(winsWithSwitching, winsWithSwitching + lossesWithSwitching);
+		const lossPercentWithSwitching = fractionToPercentageTransform(lossesWithSwitching, winsWithSwitching + lossesWithSwitching);
+		const winPercentWithoutSwitching = fractionToPercentageTransform(winsWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
+		const lossPercentWithoutSwitching = fractionToPercentageTransform(lossesWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
 
 		return (
 			<div className="metrics">
 		    	<div className="metricBox">
 		    		Rounds: {gamesPlayedTotal}
 		    	</div>
-		    	<div className="metricBox">
-		    		WWOS: {winPercentWithoutSwitching}%
-		    	</div>
-		    	<div className="metricBox">
-		    		WWS: {winPercentWithSwitching}%
-		    	</div>
+		    	{winPercentWithoutSwitching > 0 && 
+		    		<div className="metricBox">
+		    			WWOS: {winPercentWithoutSwitching}%
+		    		</div>
+		    	}
+		    	{winPercentWithSwitching > 0 &&
+		    		<div className="metricBox">
+			    		WWS: {winPercentWithSwitching}%
+			    	</div>
+			    }
     		</div>
     	);
 	}
