@@ -5,6 +5,7 @@ import { shuffleArray } from 'utilities/arrays';
 import { FormGroup, FormControlLabel, Switch, TextField } from '@material-ui/core';
 
 import GameCard from 'components/GameCard/GameCard';
+import Metrics from 'components/Metrics/Metrics';
 
 class Board extends React.Component {
 
@@ -164,33 +165,12 @@ class Board extends React.Component {
 			cardHasBeenChosen,
 			cardsHaveBeenRevealed,
 			cards,
-			metrics: {
-				winsWithoutSwitching,
-				lossesWithoutSwitching,
-				winsWithSwitching,
-				lossesWithSwitching,
-				gamesPlayedTotal,
-			},
+			metrics,
 		} = this.state;
-
-		const winPercentWithSwitching = parseFloat((winsWithSwitching / gamesPlayedTotal) * 100).toFixed(2);
-		const lossPercentWithSwitching = parseFloat((lossesWithSwitching / gamesPlayedTotal) * 100).toFixed(2);
-		const winPercentWithoutSwitching = parseFloat((winsWithoutSwitching / gamesPlayedTotal) * 100).toFixed(2);
-		const lossPercentWithoutSwitching = parseFloat((lossesWithoutSwitching / gamesPlayedTotal) * 100).toFixed(2);
 
 		return (
 			<div>
-	    		<div className="metrics">
-			    	<div className="metricBox">
-			    		Rounds: {gamesPlayedTotal}
-			    	</div>
-			    	<div className="metricBox">
-			    		WWOS: {winPercentWithoutSwitching}%
-			    	</div>
-			    	<div className="metricBox">
-			    		WWS: {winPercentWithSwitching}%
-			    	</div>
-		    	</div>
+	    		<Metrics data={metrics} />
 				<h1 className="gameTitle">{message}</h1>
 			    <div className="gameSpace">
 			    	{cards.map((value, index) => {
