@@ -3,7 +3,7 @@ import React from 'react';
 import Game from 'components/Game/Game';
 
 const App = () => (
-	<Game />
+    <Game/>
 );
 
 export default App;

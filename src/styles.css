@@ -1,31 +1,31 @@
 html, body, #root, .gameSpace {
-	height: 100%;
-	font-family: 'Roboto';
-} 
+    height: 100%;
+    font-family: 'Roboto';
+}
 
 body {
-	background: grey;
-	color: white;
+    background: grey;
+    color: white;
 }
 
 .hide {
-	display: none;
+    display: none;
 }
 
 .gameTitle {
-	display: flex;
+    display: flex;
     justify-content: center;
     margin: 1rem 0;
 }
 
 .gameSpace {
-	display: flex;
-	justify-content: space-evenly;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .playingButtonsGroup {
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .playAgainButton {
@@ -33,69 +33,69 @@ body {
 }
 
 .playingCardScene {
-	width: 239px;
-	height: 335px;
-	perspective: 600px;
-	align-self: center;
+    width: 239px;
+    height: 335px;
+    perspective: 600px;
+    align-self: center;
 }
 
 .playingCard {
-	width: 100%;
-	height: 100%;
-	position: relative;
-	transition: transform 1s;
-	transform-style: preserve-3d;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 1s;
+    transform-style: preserve-3d;
 }
 
 .playingCard.isFlipped {
-	transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
 .playingCardFace {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-size: 239px 335px;
-	border-radius: 12px !important;
-	backface-visibility: hidden;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-size: 239px 335px;
+    border-radius: 12px !important;
+    backface-visibility: hidden;
 }
 
 .playingCardFace--front {
-	transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
-.cardAH {
-	background: url(./components/GameCard/assets/AH.svg) !important;
+.card-face-ace {
+    background: url(./components/GameCard/assets/AH.svg) !important;
 }
 
-.card2B {
-	background: url(./components/GameCard/assets/2B.svg) !important;
+.card-face-reverse {
+    background: url(./components/GameCard/assets/2B.svg) !important;
 }
 
-.card1J {
-	background: url(./components/GameCard/assets/1J.svg) !important;
+.card-face-joker {
+    background: url(./components/GameCard/assets/1J.svg) !important;
 }
 
 
 .markCardWrapper {
-	position: absolute;
+    position: absolute;
     top: 14%;
 }
 
 .markCard {
-	height: 100% !important;
+    height: 100% !important;
     width: 100% !important;
     color: green;
 }
 
 .metrics {
-	display: flex;
+    display: flex;
     justify-content: space-evenly;
     margin-top: 1rem;
 }
 
 .metricBox {
-	font-size: 2rem;
+    font-size: 2rem;
     border-bottom: 0.125rem solid #3f51b5;
     padding: 0.5rem;
 }

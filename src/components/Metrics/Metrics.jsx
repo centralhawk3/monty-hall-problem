@@ -4,48 +4,48 @@ import { fractionToPercentageTransform } from 'transforms/common';
 
 class Metrics extends Component {
 
-	constructor(props) {
-		super(props);
-	}
+    constructor(props) {
+        super(props);
+    }
 
-	render() {
-		const {
-			data: {
-				winsWithoutSwitching,
-				lossesWithoutSwitching,
-				winsWithSwitching,
-				lossesWithSwitching,
-				gamesPlayedTotal,
-			},
-		} = this.props;
+    render() {
+        const {
+            data: {
+                winsWithoutSwitching,
+                lossesWithoutSwitching,
+                winsWithSwitching,
+                lossesWithSwitching,
+                gamesPlayedTotal,
+            },
+        } = this.props;
 
-		const winPercentWithSwitching = fractionToPercentageTransform(winsWithSwitching, winsWithSwitching + lossesWithSwitching);
-		const lossPercentWithSwitching = fractionToPercentageTransform(lossesWithSwitching, winsWithSwitching + lossesWithSwitching);
-		const winPercentWithoutSwitching = fractionToPercentageTransform(winsWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
-		const lossPercentWithoutSwitching = fractionToPercentageTransform(lossesWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
+        const winPercentWithSwitching = fractionToPercentageTransform(winsWithSwitching, winsWithSwitching + lossesWithSwitching);
+        const lossPercentWithSwitching = fractionToPercentageTransform(lossesWithSwitching, winsWithSwitching + lossesWithSwitching);
+        const winPercentWithoutSwitching = fractionToPercentageTransform(winsWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
+        const lossPercentWithoutSwitching = fractionToPercentageTransform(lossesWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
 
-		return (
-			<div className="metrics">
-		    	<div className="metricBox">
-		    		Rounds: {gamesPlayedTotal}
-		    	</div>
-		    	{winPercentWithoutSwitching > 0 && 
-		    		<div className="metricBox">
-		    			
-		    		</div>
-		    	}
-		    	{winPercentWithSwitching > 0 &&
-		    		<div className="metricBox">
-			    		WWS: {winPercentWithSwitching}%
-			    	</div>
-			    }
-    		</div>
-    	);
-	}
+        return (
+            <div className="metrics">
+                <div className="metricBox">
+                    Rounds: {gamesPlayedTotal}
+                </div>
+                {winPercentWithoutSwitching > 0 &&
+                <div className="metricBox">
+
+                </div>
+                }
+                {winPercentWithSwitching > 0 &&
+                <div className="metricBox">
+                    WWS: {winPercentWithSwitching}%
+                </div>
+                }
+            </div>
+        );
+    }
 }
 
 Metrics.PropTypes = {
-	data: PropTypes.object,
+    data: PropTypes.object,
 };
 
 export default Metrics;

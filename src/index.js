@@ -10,6 +10,6 @@ import './material-icons.css';
 import './roboto-font.css';
 
 ReactDOM.render(
-	React.createElement(App),
-	document.getElementById('root')
+    React.createElement(App),
+    document.getElementById('root')
 );
