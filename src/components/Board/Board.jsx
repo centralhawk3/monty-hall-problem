@@ -2,7 +2,6 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@material-ui/core';
 import { shuffleArray } from 'utilities/arrays';
-import { FormGroup, FormControlLabel, Switch, TextField } from '@material-ui/core';
 
 import GameCard from 'components/GameCard/GameCard';
 import Metrics from 'components/Metrics/Metrics';
@@ -27,8 +26,6 @@ class Board extends React.Component {
 			cardsHaveBeenRevealed: false,
 			cardHasBeenChosen: false,
 		};
-		this.handleOnClick = this.handleOnClick.bind(this);
-		this.reset = this.reset.bind(this);
 	}
 
 	getCards() {
@@ -51,98 +48,108 @@ class Board extends React.Component {
 		]);
 	}
 
-	handleOnClick(card) {
-		if (this.state.cardHasBeenChosen === false) {
-			const cardToUpdate = this.state.cards.findIndex((c) => c === card);
-			this.state.cards[cardToUpdate] = {
-				...this.state.cards[cardToUpdate],
-				chosen: !card.chosen,
-			}
+	handleOnClick(card, callback) {
+		callback = callback || function(){};
+		const { cardHasBeenChosen } = this.state;
+		if (cardHasBeenChosen === false) {
+			this.setState((state) => {
+				const chosenCard = state.cards.findIndex((c) => c === card);
+				state.cards[chosenCard] = {
+					...this.state.cards[chosenCard],
+					chosen: !card.chosen,
+				}
 
-			this.setState({
-				cards: this.state.cards,
-				cardHasBeenChosen: true,
-			}, () => {
-				const cardToUpdate = this.state.cards.findIndex((c) => c.face === '1J' && c.chosen === false && c.flipped == false);
-				this.state.cards[cardToUpdate] = {
-					...this.state.cards[cardToUpdate],
+				const cardToReveal = this.state.cards.findIndex((c) => c.face === '1J' && c.chosen === false && c.flipped == false);
+				state.cards[cardToReveal] = {
+					...this.state.cards[cardToReveal],
 					flipped: true,
 				}
 
-				this.setState({
-					cards: this.state.cards,
-				});
+				return {
+					cards: state.cards,
+					cardHasBeenChosen: true,
+				};
+			}, () => {
+				callback();
 			});
 		}
 	}
 
 	reset() {
-		this.setState({
-			id: uuidv4(),
-			cards: this.getCards(),
-			winnerFound: false,
-			cardHasBeenChosen: false,
-			message: 'Find The Ace',
-			cardsHaveBeenRevealed: false,
-			switchedCardChoice: false,
+		this.setState((state) => {
+			return {
+				id: uuidv4(),
+				cards: this.getCards(),
+				winnerFound: false,
+				cardHasBeenChosen: false,
+				message: 'Find The Ace',
+				cardsHaveBeenRevealed: false,
+				switchedCardChoice: false,
+			};
 		});
 	}
 
-	switchCardChoice() {
-		const existingChoice = this.state.cards.findIndex((c) => c.chosen === true);
-		const otherChoice = this.state.cards.findIndex((c) => c.flipped === false && c.chosen === false);
-		this.state.cards[existingChoice] = {
-			...this.state.cards[existingChoice],
-			chosen: false,
-		}
-		this.state.cards[otherChoice] = {
-			...this.state.cards[otherChoice],
-			chosen: true,
-		}
-		this.setState({
-			cards: this.state.cards,
-			switchedCardChoice: true,
+	switchCardChoice(callback) {
+		callback = callback || function(){};
+		this.setState((state) => {
+			const existingChoice = state.cards.findIndex((c) => c.chosen === true);
+			const otherChoice = state.cards.findIndex((c) => c.flipped === false && c.chosen === false);
+			state.cards[existingChoice] = {
+				...state.cards[existingChoice],
+				chosen: false,
+			}
+			state.cards[otherChoice] = {
+				...state.cards[otherChoice],
+				chosen: true,
+			}
+			console.log(state.cards);
+			return {
+				cards: state.cards,
+				switchedCardChoice: true,
+			}
+		}, () => {
+			callback();
 		});
 	}
 
-	reveal() {
+	reveal(callback) {
+		callback = callback || function(){};
 		const { switchedCardChoice, cards } = this.state;
 		const isChoiceAWinner = cards.findIndex((c) => c.face === 'AH' && c.chosen === true) > -1;
 
-		const flippedCards = cards.map((card) => {
+		this.setState((state) => {
 			return {
-				...card,
-				flipped: true,
-				chosen: false,
-			}
+				metrics: {
+					winsWithSwitching: switchedCardChoice && isChoiceAWinner ? state.metrics.winsWithSwitching + 1 : state.metrics.winsWithSwitching,
+					lossesWithSwitching: switchedCardChoice && !isChoiceAWinner ? state.metrics.lossesWithSwitching + 1 : state.metrics.lossesWithSwitching,
+					winsWithoutSwitching: switchedCardChoice === false && isChoiceAWinner ? state.metrics.winsWithoutSwitching + 1 : state.metrics.winsWithoutSwitching,
+					lossesWithoutSwitching: switchedCardChoice === false && !isChoiceAWinner ? state.metrics.lossesWithoutSwitching + 1 : state.metrics.lossesWithoutSwitching,
+					gamesPlayedTotal: state.metrics.gamesPlayedTotal + 1,
+				},
+				cards: cards.map((card) => {
+					return {
+						...card,
+						flipped: true,
+						chosen: false,
+					}
+				}),
+				message: isChoiceAWinner ? 'You Win!' : 'You Lose!',
+				cardsHaveBeenRevealed: true,
+			};
+		}, () => {
+			callback();
 		});
+	}
 
-		let metrics = this.state.metrics;
-		if (switchedCardChoice && isChoiceAWinner) {
-			metrics.winsWithSwitching = metrics.winsWithSwitching + 1
-		}
-
-		if (switchedCardChoice === false && isChoiceAWinner) {
-			metrics.winsWithoutSwitching = metrics.winsWithoutSwitching + 1;
-		}
-
-		if (switchedCardChoice && !isChoiceAWinner) {
-			metrics.lossesWithSwitching = metrics.lossesWithSwitching + 1;
-		}
-
-		if (switchedCardChoice === false && !isChoiceAWinner) {
-			metrics.lossesWithoutSwitching = metrics.lossesWithoutSwitching + 1;
-		}
-
-		this.setState({
-			metrics: {
-				...metrics,
-				gamesPlayedTotal: metrics.gamesPlayedTotal+1,
-			},
-			cards: flippedCards,
-			message: isChoiceAWinner ? 'You Win!' : 'You Lose!',
-			cardsHaveBeenRevealed: true,
-		});
+	simulate() {
+		this.handleOnClick(
+			this.state.cards[1],
+			() => this.switchCardChoice(
+				() => this.reveal(
+					() => this.reset()
+				)
+			)
+		);
 	}
 
 	render() {
@@ -160,9 +167,9 @@ class Board extends React.Component {
 	    		<Metrics data={metrics} />
 				<h1 className="gameTitle">{message}</h1>
 			    <div className="gameSpace">
-			    	{cards.map((value, index) => {
-			    		const key = id + index + value.face + (value.chosen ? '1' : '0');
-			        	return <GameCard key={key} card={value} onClick={this.handleOnClick} />
+			    	{cards.map((card, index) => {
+			    		const key = id + index + card.face + (card.chosen ? '1' : '0');
+			        	return <GameCard key={key} card={card} onClick={() => this.handleOnClick(card)} />
 			     	})}
 			    </div>
 			    <div className="playingButtonsGroup">
@@ -181,6 +188,9 @@ class Board extends React.Component {
 					    	<Button variant="contained" color="primary" onClick={() => this.reveal()}>Reveal</Button>
 					    </div>
 					}
+					<div className="playAgainButton">
+				    	<Button variant="contained" color="primary" onClick={() => this.simulate()}>Simulate</Button>
+				    </div>
 			    </div>
 			</div>
 		);

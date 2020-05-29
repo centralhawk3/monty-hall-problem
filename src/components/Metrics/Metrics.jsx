@@ -31,7 +31,7 @@ class Metrics extends Component {
 		    	</div>
 		    	{winPercentWithoutSwitching > 0 && 
 		    		<div className="metricBox">
-		    			WWOS: {winPercentWithoutSwitching}%
+		    			
 		    		</div>
 		    	}
 		    	{winPercentWithSwitching > 0 &&
