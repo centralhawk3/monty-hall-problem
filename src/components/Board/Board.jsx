@@ -48,8 +48,7 @@ class Board extends React.Component {
         ]);
     }
 
-    handleOnClick(card, callback) {
-        callback = callback || function () {};
+    handleOnClick(card) {
         const {cardHasBeenChosen} = this.state;
         if (cardHasBeenChosen === false) {
             this.setState((state) => {
@@ -69,28 +68,23 @@ class Board extends React.Component {
                     cards: state.cards,
                     cardHasBeenChosen: true,
                 };
-            }, () => {
-                callback();
             });
         }
     }
 
     reset() {
-        this.setState((state) => {
-            return {
-                id: uuidv4(),
-                cards: this.getCards(),
-                winnerFound: false,
-                cardHasBeenChosen: false,
-                message: 'Find The Ace',
-                cardsHaveBeenRevealed: false,
-                switchedCardChoice: false,
-            };
+        this.setState({
+            id: uuidv4(),
+            cards: this.getCards(),
+            winnerFound: false,
+            cardHasBeenChosen: false,
+            message: 'Find The Ace',
+            cardsHaveBeenRevealed: false,
+            switchedCardChoice: false,
         });
     }
 
-    switchCardChoice(callback) {
-        callback = callback || function () {};
+    switchCardChoice() {
         this.setState((state) => {
             const existingChoice = state.cards.findIndex((c) => c.chosen === true);
             const otherChoice = state.cards.findIndex((c) => c.flipped === false && c.chosen === false);
@@ -107,13 +101,10 @@ class Board extends React.Component {
                 cards: state.cards,
                 switchedCardChoice: true,
             }
-        }, () => {
-            callback();
         });
     }
 
-    reveal(callback) {
-        callback = callback || function () {};
+    reveal() {
         const {switchedCardChoice, cards} = this.state;
         const isChoiceAWinner = cards.findIndex((c) => c.face === 'ace' && c.chosen === true) > -1;
 
@@ -136,20 +127,7 @@ class Board extends React.Component {
                 message: isChoiceAWinner ? 'You Win!' : 'You Lose!',
                 cardsHaveBeenRevealed: true,
             };
-        }, () => {
-            callback();
         });
-    }
-
-    simulate() {
-        this.handleOnClick(
-            this.state.cards[1],
-            () => this.switchCardChoice(
-                () => this.reveal(
-                    () => this.reset()
-                )
-            )
-        );
     }
 
     render() {
@@ -207,9 +185,6 @@ class Board extends React.Component {
                         <Button variant="contained" color="primary" onClick={() => this.reveal()}>Reveal</Button>
                     </div>
                     }
-                    <div className="playAgainButton">
-                        <Button variant="contained" color="primary" onClick={() => this.simulate()}>Simulate</Button>
-                    </div>
                 </div>
             </div>
         );
