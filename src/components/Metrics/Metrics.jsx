@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { fractionToPercentageTransform } from 'transforms/common';
 
-const Metrics = (props) => {
-    const {
-        winsWithoutSwitching,
-        lossesWithoutSwitching,
-        winsWithSwitching,
-        lossesWithSwitching,
-        gamesPlayedTotal,
-    } = props.data;
+const Metrics = ({
+    winsWithoutSwitching,
+    lossesWithoutSwitching,
+    winsWithSwitching,
+    lossesWithSwitching,
+    gamesPlayedTotal,
+}) => {
 
     const winPercentWithSwitching = fractionToPercentageTransform(winsWithSwitching, winsWithSwitching + lossesWithSwitching);
     const winPercentWithoutSwitching = fractionToPercentageTransform(winsWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
@@ -34,7 +33,11 @@ const Metrics = (props) => {
 };
 
 Metrics.PropTypes = {
-    data: PropTypes.object,
+    winsWithoutSwitching: PropTypes.number.isRequired,
+    lossesWithoutSwitching: PropTypes.number.isRequired,
+    winsWithSwitching: PropTypes.number.isRequired,
+    lossesWithSwitching: PropTypes.number.isRequired,
+    gamesPlayedTotal: PropTypes.number.isRequired,
 };
 
 export default Metrics;

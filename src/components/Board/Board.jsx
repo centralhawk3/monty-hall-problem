@@ -159,17 +159,35 @@ class Board extends React.Component {
             cardHasBeenChosen,
             cardsHaveBeenRevealed,
             cards,
-            metrics,
+            metrics: {
+                winsWithoutSwitching,
+                lossesWithoutSwitching,
+                winsWithSwitching,
+                lossesWithSwitching,
+                gamesPlayedTotal,
+            },
         } = this.state;
 
         return (
             <div>
-                <Metrics data={metrics}/>
+                <Metrics
+                    winsWithoutSwitching={winsWithoutSwitching}
+                    lossesWithoutSwitching={lossesWithoutSwitching}
+                    winsWithSwitching={winsWithSwitching}
+                    lossesWithSwitching={lossesWithSwitching}
+                    gamesPlayedTotal={gamesPlayedTotal}
+                />
                 <h1 className="gameTitle">{message}</h1>
                 <div className="gameSpace">
                     {cards.map((card, index) => {
                         const key = id + index + card.face + (card.chosen ? '1' : '0');
-                        return <GameCard key={key} card={card} onClick={() => this.handleOnClick(card)}/>
+                        return (
+                            <GameCard
+                                key={key}
+                                card={card}
+                                onClick={() => this.handleOnClick(card)}
+                            />
+                         )
                     })}
                 </div>
                 <div className="playingButtonsGroup">
