@@ -20,9 +20,7 @@ class Metrics extends Component {
         } = this.props;
 
         const winPercentWithSwitching = fractionToPercentageTransform(winsWithSwitching, winsWithSwitching + lossesWithSwitching);
-        const lossPercentWithSwitching = fractionToPercentageTransform(lossesWithSwitching, winsWithSwitching + lossesWithSwitching);
         const winPercentWithoutSwitching = fractionToPercentageTransform(winsWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
-        const lossPercentWithoutSwitching = fractionToPercentageTransform(lossesWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
 
         return (
             <div className="metrics">
@@ -30,9 +28,9 @@ class Metrics extends Component {
                     Rounds: {gamesPlayedTotal}
                 </div>
                 {winPercentWithoutSwitching > 0 &&
-                <div className="metricBox">
-
-                </div>
+                    <div className="metricBox">
+                        WWOS: {winPercentWithoutSwitching}%
+                    </div>
                 }
                 {winPercentWithSwitching > 0 &&
                 <div className="metricBox">

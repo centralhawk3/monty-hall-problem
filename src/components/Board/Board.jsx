@@ -31,17 +31,17 @@ class Board extends React.Component {
     getCards() {
         return shuffleArray([
             {
-                face: '1J',
+                face: 'joker',
                 flipped: false,
                 chosen: false,
             },
             {
-                face: '1J',
+                face: 'joker',
                 flipped: false,
                 chosen: false,
             },
             {
-                face: 'AH',
+                face: 'ace',
                 flipped: false,
                 chosen: false,
             },
@@ -59,7 +59,7 @@ class Board extends React.Component {
                     chosen: !card.chosen,
                 }
 
-                const cardToReveal = this.state.cards.findIndex((c) => c.face === '1J' && c.chosen === false && c.flipped == false);
+                const cardToReveal = this.state.cards.findIndex((c) => c.face === 'joker' && c.chosen === false && c.flipped == false);
                 state.cards[cardToReveal] = {
                     ...this.state.cards[cardToReveal],
                     flipped: true,
@@ -115,7 +115,7 @@ class Board extends React.Component {
     reveal(callback) {
         callback = callback || function () {};
         const {switchedCardChoice, cards} = this.state;
-        const isChoiceAWinner = cards.findIndex((c) => c.face === 'AH' && c.chosen === true) > -1;
+        const isChoiceAWinner = cards.findIndex((c) => c.face === 'ace' && c.chosen === true) > -1;
 
         this.setState((state) => {
             return {

@@ -23,8 +23,7 @@ class GameCard extends React.Component {
                     <div className={this.state.markCardWrapperClasses}>
                         <CheckCircleOutlineRoundedIcon className="markCard"/>
                     </div>
-                    <Card className="1j"
-                          className={`playingCardFace playingCardFace--front card${this.props.card.face}`}/>
+                    <Card className={`playingCardFace playingCardFace--front card-face-${this.props.card.face}`}/>
                 </div>
             </div>
         );
