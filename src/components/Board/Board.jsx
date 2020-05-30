@@ -102,7 +102,7 @@ class Board extends React.Component {
                 ...state.cards[otherChoice],
                 chosen: true,
             }
-            
+
             return {
                 cards: state.cards,
                 switchedCardChoice: true,
