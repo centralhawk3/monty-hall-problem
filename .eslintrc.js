@@ -23,4 +23,12 @@ module.exports = {
   ],
   rules: {
   },
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: ['.js', '.jsx'],
+        moduleDirectory: ['node_modules', 'src/'],
+      },
+    },
+  },
 };
