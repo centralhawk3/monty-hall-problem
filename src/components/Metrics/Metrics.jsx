@@ -3,41 +3,53 @@ import PropTypes from 'prop-types';
 import { fractionToPercentageTransform } from 'transforms/common';
 
 const Metrics = ({
-    winsWithoutSwitching,
-    lossesWithoutSwitching,
-    winsWithSwitching,
-    lossesWithSwitching,
-    gamesPlayedTotal,
+  winsWithoutSwitching,
+  lossesWithoutSwitching,
+  winsWithSwitching,
+  lossesWithSwitching,
+  totalGamesPlayed,
 }) => {
+  const winPercentWithSwitching = fractionToPercentageTransform(
+    winsWithSwitching,
+    winsWithSwitching + lossesWithSwitching,
+  );
+  const winPercentWithoutSwitching = fractionToPercentageTransform(
+    winsWithoutSwitching,
+    winsWithoutSwitching + lossesWithoutSwitching,
+  );
 
-    const winPercentWithSwitching = fractionToPercentageTransform(winsWithSwitching, winsWithSwitching + lossesWithSwitching);
-    const winPercentWithoutSwitching = fractionToPercentageTransform(winsWithoutSwitching, winsWithoutSwitching + lossesWithoutSwitching);
-
-    return (
-        <div className="metrics">
-            <div className="metricBox">
-                Rounds: {gamesPlayedTotal}
-            </div>
-            {winPercentWithoutSwitching > 0 &&
-            <div className="metricBox">
-                WWOS: {winPercentWithoutSwitching}%
-            </div>
-            }
-            {winPercentWithSwitching > 0 &&
-            <div className="metricBox">
-                WWS: {winPercentWithSwitching}%
-            </div>
-            }
+  return (
+    <div className="metrics">
+      <div className="metricBox">
+        Rounds:
+        {totalGamesPlayed}
+      </div>
+      {winPercentWithoutSwitching > 0
+      && (
+        <div className="metricBox">
+          WWOS:
+          {winPercentWithoutSwitching}
+          %
         </div>
-    );
+      )}
+      {winPercentWithSwitching > 0
+      && (
+        <div className="metricBox">
+          WWS:
+          {winPercentWithSwitching}
+          %
+        </div>
+      )}
+    </div>
+  );
 };
 
-Metrics.PropTypes = {
-    winsWithoutSwitching: PropTypes.number.isRequired,
-    lossesWithoutSwitching: PropTypes.number.isRequired,
-    winsWithSwitching: PropTypes.number.isRequired,
-    lossesWithSwitching: PropTypes.number.isRequired,
-    gamesPlayedTotal: PropTypes.number.isRequired,
+Metrics.propTypes = {
+  winsWithoutSwitching: PropTypes.number.isRequired,
+  lossesWithoutSwitching: PropTypes.number.isRequired,
+  winsWithSwitching: PropTypes.number.isRequired,
+  lossesWithSwitching: PropTypes.number.isRequired,
+  totalGamesPlayed: PropTypes.number.isRequired,
 };
 
 export default Metrics;
