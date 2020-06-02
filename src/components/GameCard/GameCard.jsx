@@ -8,7 +8,7 @@ const GameCard = ({
   card,
   onClick,
 }) => (
-  <div className="playingCardScene" onClick={() => onClick(card)}>
+  <div className="playingCardScene" onClick={onClick(card)}>
     <div className={card.flipped ? 'playingCard isFlipped' : 'playingCard'}>
       <Card className="playingCardFace card-face-reverse" />
       <div className={card.chosen ? 'markCardWrapper' : 'markCardWrapper hide'}>
@@ -20,8 +20,12 @@ const GameCard = ({
 );
 
 GameCard.propTypes = {
-  card: PropTypes.object,
-  onClick: PropTypes.func,
+  card: PropTypes.shape({
+    face: PropTypes.string.isRequired,
+    flipped: PropTypes.bool.isRequired,
+    chosen: PropTypes.bool.isRequired,
+  }).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default GameCard;
