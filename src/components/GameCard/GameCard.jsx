@@ -8,7 +8,7 @@ const GameCard = ({
   card,
   onClick,
 }) => (
-  <div className="playingCardScene" onClick={onClick(card)}>
+  <div className="playingCardScene" onClick={() => onClick(card)}>
     <div className={card.flipped ? 'playingCard isFlipped' : 'playingCard'}>
       <Card className="playingCardFace card-face-reverse" />
       <div className={card.chosen ? 'markCardWrapper' : 'markCardWrapper hide'}>
