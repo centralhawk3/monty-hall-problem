@@ -1,4 +1,4 @@
-export const shuffleArray = (arrayToBeShuffled) => {
+export const shuffleArray = <T>(arrayToBeShuffled: T[]): T[] => {
     const shuffledArray = [];
     while (arrayToBeShuffled.length > 0) {
         const randomNumber = Math.floor(Math.random() * arrayToBeShuffled.length);

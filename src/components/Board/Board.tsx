@@ -6,9 +6,33 @@ import { shuffleArray } from 'utilities/arrays';
 import GameCard from 'components/GameCard/GameCard';
 import Metrics from 'components/Metrics/Metrics';
 
-class Board extends React.Component {
+type Metrics = {
+  winsWithoutSwitching: number,
+  lossesWithoutSwitching: number,
+  winsWithSwitching: number,
+  lossesWithSwitching: number,
+  totalGamesPlayed: number,
+};
 
-  constructor(props) {
+type BoardState = {
+  id: string,
+  cards: Card[],
+  message: string,
+  metrics: Metrics,
+  switchedCardChoice: boolean,
+  cardsHaveBeenRevealed: boolean,
+  cardHasBeenChosen: boolean,
+}
+
+type Card = {
+  face: string,
+  flipped: boolean,
+  chosen: boolean,
+}
+
+class Board extends React.Component<unknown, BoardState> {
+
+  constructor(props: unknown) {
     super(props);
     this.state = {
       id: uuidv4(),
@@ -27,7 +51,7 @@ class Board extends React.Component {
     };
   }
 
-  getCards() {
+  getCards(): Card[] {
     return shuffleArray([
       {
         face: 'joker',
@@ -47,9 +71,9 @@ class Board extends React.Component {
     ]);
   }
 
-  handleOnClick(card) {
+  handleOnClick(card: Card): void {
     const { cardHasBeenChosen, cards } = this.state;
-    if (cardHasBeenChosen === false) {
+    if (!cardHasBeenChosen) {
       this.setState((state) => {
         const chosenCard = state.cards.findIndex((c) => c === card);
         cards[chosenCard] = {
@@ -57,7 +81,7 @@ class Board extends React.Component {
           chosen: !card.chosen,
         };
 
-        const cardToReveal = cards.findIndex((c) => c.face === 'joker' && c.chosen === false && c.flipped === false);
+        const cardToReveal = cards.findIndex((c: Card) => c.face === 'joker' && !c.chosen && !c.flipped);
         cards[cardToReveal] = {
           ...cards[cardToReveal],
           flipped: true,
@@ -71,7 +95,7 @@ class Board extends React.Component {
     }
   }
 
-  reset() {
+  reset(): void {
     this.setState({
       id: uuidv4(),
       cards: this.getCards(),
@@ -82,7 +106,7 @@ class Board extends React.Component {
     });
   }
 
-  switchCardChoice() {
+  switchCardChoice(): void {
     this.setState((state) => {
       const { cards } = state;
       const existingChoice = cards.findIndex((c) => c.chosen === true);
@@ -103,7 +127,7 @@ class Board extends React.Component {
     });
   }
 
-  reveal() {
+  reveal(): void {
     this.setState((state) => {
       const { switchedCardChoice, cards, metrics } = state;
       const isChoiceAWinner = cards.findIndex((c) => c.face === 'ace' && c.chosen === true) > -1;
@@ -130,7 +154,7 @@ class Board extends React.Component {
     });
   }
 
-  render() {
+  render(): JSX.Element {
     const {
       id,
       message,
@@ -175,13 +199,13 @@ class Board extends React.Component {
               <Button variant="contained" color="primary" onClick={() => this.reset()}>Play Again</Button>
             </div>
           )}
-          {(cardHasBeenChosen && cardsHaveBeenRevealed === false)
+          {(cardHasBeenChosen && !cardsHaveBeenRevealed)
           && (
             <div className="playAgainButton">
               <Button variant="contained" color="secondary" onClick={() => this.switchCardChoice()}>Switch Choice</Button>
             </div>
           )}
-          {(cardHasBeenChosen && cardsHaveBeenRevealed === false)
+          {(cardHasBeenChosen && !cardsHaveBeenRevealed)
           && (
             <div className="playAgainButton">
               <Button variant="contained" color="primary" onClick={() => this.reveal()}>Reveal</Button>

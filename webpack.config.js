@@ -1,13 +1,13 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.ts',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
     hot: true,
@@ -22,13 +22,19 @@ module.exports = {
         ],
       },
       {
-        test: /\.(js|jsx)$/,
+        enforce: 'pre',
+        test: /\.(js)$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        loader: 'source-map-loader',
       },
       {
         test: /\.(svg)$/,
         use: ['file-loader'],
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: ['ts-loader'],
       },
     ],
   },
@@ -38,6 +44,10 @@ module.exports = {
       utilities: path.resolve(__dirname, 'src/utilities/'),
       transforms: path.resolve(__dirname, 'src/transforms/'),
     },
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+  },
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
   },
 };
