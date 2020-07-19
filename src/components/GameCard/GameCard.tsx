@@ -4,9 +4,15 @@ import PropTypes from 'prop-types';
 import { Card } from '@material-ui/core';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 
+type Card = {
+  face: string,
+  flipped: boolean,
+  chosen: boolean,
+}
+
 type GameCardProps = {
-  card: ,
-  onClick: void
+  card: Card,
+  onClick: (card: Card) => void,
 }
 
 const GameCard = ({

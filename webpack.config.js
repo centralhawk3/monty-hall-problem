@@ -29,13 +29,18 @@ module.exports = {
       },
       {
         test: /\.(svg)$/,
-        use: ['file-loader'],
+        use: 'file-loader',
       },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: ['ts-loader'],
+        use: 'ts-loader',
       },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
+      }
     ],
   },
   resolve: {
@@ -45,9 +50,5 @@ module.exports = {
       transforms: path.resolve(__dirname, 'src/transforms/'),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
   },
 };
