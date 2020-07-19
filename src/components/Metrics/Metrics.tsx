@@ -2,13 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { fractionToPercentageTransform } from 'transforms/common';
 
+type MetricTypeProps = {
+  winsWithoutSwitching: number,
+  lossesWithoutSwitching: number,
+  winsWithSwitching: number,
+  lossesWithSwitching: number,
+  totalGamesPlayed: number,
+}
+
 const Metrics = ({
   winsWithoutSwitching,
   lossesWithoutSwitching,
   winsWithSwitching,
   lossesWithSwitching,
   totalGamesPlayed,
-}) => {
+}: MetricTypeProps): JSX.Element => {
+
   const winPercentWithSwitching = fractionToPercentageTransform(
     winsWithSwitching,
     winsWithSwitching + lossesWithSwitching,
